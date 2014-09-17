@@ -2,23 +2,19 @@ jQuery.noConflict();
 (function($) {
   $(function() {
 
-
-
-    loadPage = function ( url ) {
-        $('#maincontainer').load( url, function(){
-          $('a').on('click', function(event){
-            event.preventDefault();
-            loadPage($(this).attr('href'));
+        router = function ( url ) {
+          var source = url;
+          var optStart = source.search('#');
+          var pageId = source.substr(optStart+1);
+          $('#maincontainer').load( 'views/'+pageId+'.html', function(){
+            $('a.bcpage').on('click', function(){
+              router($(this).attr('href'));
+            })
           });
-        })
-    }
-
-    loadPage('./views/home.html');
-
-    $('a').on('click', function(event){
-      event.preventDefault();
-      loadPage($(this).attr('href'));
-    });
+          return pageId;
+        };
+        
+        router('index.html#home');
 
   });
 })(jQuery);
